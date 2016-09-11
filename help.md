@@ -1,0 +1,5 @@
+- https://github.com/evancz/elm-todomvc
+- https://github.com/slawrence/vessel
+- https://ohanhi.github.io/base-for-game-elm-017.html
+- http://package.elm-lang.org/
+- https://github.com/arpad-m/dontfall
