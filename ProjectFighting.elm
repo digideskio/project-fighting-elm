@@ -93,7 +93,7 @@ update msg d =
         ({ d | projectiles = projectiles }, Cmd.none)
 
     MouseMove position ->
-      ({ d | width = position.x, height = position.y }, Cmd.none)
+      (d, Cmd.none)
 
     MouseClick position ->
       let

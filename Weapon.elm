@@ -62,7 +62,6 @@ gunWeapon =
 fire : Game -> Weapon -> Game
 fire game weapon =
   case weapon.weaponType of
-
     Dynamite ->
       { game | blocks = dynamiteBlock :: game.blocks }
 

@@ -1,16 +1,18 @@
 module Player exposing (..)
 
-import Utils exposing (Point)
-
 
 type alias Player =
-  { pos : Point
-  , vel : Point
+  { x : Float
+  , y : Float
+  , dx : Float
+  , dy : Float
   }
 
 
 player : Player
 player =
-  { pos = { x = 0, y = 0 }
-  , vel = { x = 0, y = 0 }
+  { x = 0
+  , y = 0
+  , dx = 0
+  , dy = 0
   }
