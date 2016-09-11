@@ -1,14 +1,6 @@
 module Projectile exposing (..)
 
 
--- type ProjectileType
---   = Bullet
---   | Grenade
---   | Rocket
---   | ShotgunBullet
---   | SmokeGrenade
-
-
 type alias Projectile =
   { x : Float
   , y : Float

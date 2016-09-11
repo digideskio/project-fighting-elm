@@ -21,7 +21,6 @@ type alias Weapon =
   , baseLatency : Float
   , latency : Float
   , miniatureIndex : Int
-  -- , projectileType : ProjectileType
   , weaponType : WeaponType
   }
 
@@ -35,28 +34,8 @@ gunWeapon =
   , baseLatency = 5
   , latency = 0
   , miniatureIndex = 0
-  -- , projectileType = Bullet
   , weaponType = Gun
   }
-
-
--- fire : Game -> Weapon -> Game
--- fire game weapon =
---   case weapon.projectileType of
---     Bullet ->
---       { game | projectiles = bulletProjectile :: game.projectiles }
---
---     Grenade ->
---       { game | projectiles = grenadeProjectile :: game.projectiles }
---
---     Rocket ->
---       { game | projectiles = rocketProjectile :: game.projectiles }
---
---     ShotgunBullet ->
---       { game | projectiles = shotgunProjectile :: game.projectiles }
---
---     SmokeGrenade ->
---       { game | projectiles = smokeGrenadeProjectile :: game.projectiles }
 
 
 fire : Game -> Weapon -> Game

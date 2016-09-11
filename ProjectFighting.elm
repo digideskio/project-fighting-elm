@@ -1,4 +1,4 @@
-import Color
+-- import Color
 import AnimationFrame
 import Keyboard
 import Mouse
@@ -9,8 +9,8 @@ import Key
 import Html.App
 
 import Html exposing (Html, div, text)
-import Element exposing (Element, toHtml)
-import Collage exposing (Form, collage, rect, filled)
+-- import Element exposing (Element, toHtml)
+-- import Collage exposing (Form, collage, rect, filled)
 import Time exposing (Time)
 import Keyboard exposing (KeyCode)
 
@@ -20,16 +20,19 @@ import Player exposing (Player, newPlayer)
 import Particle exposing (Particle)
 
 
-scene : List Form -> Element
-scene elements = collage 500 500 elements
+-- scene : List Form -> Element
+-- scene elements = collage 500 500 elements
 
 
-player : Form
-player = filled (Color.rgb 30 19 67) (rect 14 15)
+-- player : Form
+-- player = filled (Color.rgb 30 19 67) (rect 14 15)
 
 
-renderScene : Element
-renderScene = scene [ player ]
+-- renderScene : Element
+-- renderScene = scene [ player ]
+
+-- render : GameData -> Html GameMsg
+-- render d = div [ ] [ toHtml renderScene ]
 
 
 getCurrentPlayer : Model -> Int -> Player
@@ -45,17 +48,7 @@ getCurrentPlayer game id =
         newPlayer game.uid
 
 
--- render : GameData -> Html GameMsg
--- render d = div [ ] [ toHtml renderScene ]
-
-
 type alias Map = List (List Int)
-
-
-type GameState
-  = Running
-  | Paused
-  | GameOver
 
 
 type alias Model =
