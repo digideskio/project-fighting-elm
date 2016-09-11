@@ -9,8 +9,8 @@ type alias Particle =
   }
 
 
-particle : Particle
-particle =
+newParticle : Particle
+newParticle =
   { x = 0
   , y = 0
   , dx = 0
