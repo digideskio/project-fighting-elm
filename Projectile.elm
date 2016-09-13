@@ -1,4 +1,12 @@
-module Projectile exposing (..)
+module Projectile exposing
+  ( Projectile
+  , bulletProjectile
+  , grenadeProjectile
+  , rocketProjectile
+  , shotgunProjectile
+  , smokeGrenadeProjectile
+  , updateProjectiles
+  )
 
 
 type alias Projectile =
@@ -12,46 +20,79 @@ type alias Projectile =
   }
 
 
-newProjectile : Projectile
-newProjectile =
+newProjectile : Float -> Float -> Float -> Projectile
+newProjectile dx dy angle =
   { x = 0
   , y = 0
-  , dx = 1
-  , dy = 1
-  , damages = 20
-  , angle = 0
+  , dx = dx
+  , dy = dy
+  , damages = 0
+  , angle = angle
   , lifetime = 3
   }
 
 
 -- Balle de pistolet
 -- @todo
-bulletProjectile : Projectile
-bulletProjectile = newProjectile
+bulletProjectile : Float -> Float -> Float -> Projectile
+bulletProjectile dx dy angle =
+  let
+    projectile = newProjectile dx dy angle
+  in
+  { projectile
+    | damages = 6
+    , lifetime = 3
+    }
 
 
 -- Grenade
 -- @todo
-grenadeProjectile : Projectile
-grenadeProjectile = newProjectile
+grenadeProjectile : Float -> Float -> Float -> Projectile
+grenadeProjectile dx dy angle =
+  let
+    projectile = newProjectile dx dy angle
+  in
+  { projectile
+    | lifetime = 4
+    }
 
 
 -- Roquette
 -- @todo
-rocketProjectile : Projectile
-rocketProjectile = newProjectile
+rocketProjectile : Float -> Float -> Float -> Projectile
+rocketProjectile dx dy angle =
+  let
+    projectile = newProjectile dx dy angle
+  in
+  { projectile
+    | damages = 20
+    , lifetime = 3
+    }
 
 
 -- Balle de fusil à pompe
 -- @todo
-shotgunProjectile : Projectile
-shotgunProjectile = newProjectile
+shotgunProjectile : Float -> Float -> Float -> Projectile
+shotgunProjectile dx dy angle =
+  let
+    projectile = newProjectile dx dy angle
+  in
+  { projectile
+    | damages = 8
+    , lifetime = 3
+    }
 
 
 -- Fumigène
 -- @todo
-smokeGrenadeProjectile : Projectile
-smokeGrenadeProjectile = newProjectile
+smokeGrenadeProjectile : Float -> Float -> Float -> Projectile
+smokeGrenadeProjectile dx dy angle =
+  let
+    projectile = newProjectile dx dy angle
+  in
+  { projectile
+    | lifetime = 4
+    }
 
 
 -- Mettre à jour les projecties

@@ -1,5 +1,7 @@
 module Player exposing (..)
 
+import Weapon exposing (Weapon, newGun)
+
 
 type alias Player =
   { x : Float
@@ -7,6 +9,7 @@ type alias Player =
   , dx : Float
   , dy : Float
   , id : Int
+  , weapon : Weapon
   }
 
 
@@ -17,6 +20,7 @@ newPlayer id =
   , dx = 0
   , dy = 0
   , id = id
+  , weapon = newGun
   }
 
 

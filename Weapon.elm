@@ -25,10 +25,10 @@ type alias Weapon =
   }
 
 
-gunWeapon : Weapon
-gunWeapon =
-  { name = "Pistolet"
-  , infiniteAmmo = True
+newWeapon : Weapon
+newWeapon =
+  { name = "--"
+  , infiniteAmmo = False
   , ammo = 0
   , ammoGivenByBonus = 0
   , baseLatency = 5
@@ -38,32 +38,12 @@ gunWeapon =
   }
 
 
-fire : Game -> Weapon -> Game
-fire game weapon =
-  case weapon.weaponType of
-    Dynamite ->
-      { game | blocks = dynamiteBlock :: game.blocks }
-
-    FlameThrower ->
-      game
-
-    Grenade ->
-      { game | projectiles = grenadeProjectile :: game.projectiles }
-
-    Gun ->
-      { game | projectiles = bulletProjectile :: game.projectiles }
-
-    Mine ->
-      { game | blocks = mineBlock :: game.blocks }
-
-    RocketLauncher ->
-      { game | projectiles = rocketProjectile :: game.projectiles }
-
-    Shotgun ->
-      { game | projectiles = shotgunProjectile :: game.projectiles }
-
-    SmokeGrenade ->
-      { game | projectiles = smokeGrenadeProjectile :: game.projectiles }
-
-    SubmachineGun ->
-      game
+newGun : Weapon
+newGun =
+  { newWeapon
+    | name = "Pistolet"
+    , infiniteAmmo = True
+    , baseLatency = 5
+    , miniatureIndex = 0
+    , weaponType = Gun
+    }

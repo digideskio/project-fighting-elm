@@ -1,3 +1,5 @@
+module ProjectFighting exposing (..)
+
 -- import Color
 import AnimationFrame
 import Keyboard
@@ -5,6 +7,8 @@ import Mouse
 
 import Projectile
 import Key
+import Game
+import Weapon
 
 import Html.App
 
@@ -18,6 +22,8 @@ import Projectile exposing (Projectile)
 import Block exposing (Block)
 import Player exposing (Player, newPlayer)
 import Particle exposing (Particle)
+
+import Game exposing (Game)
 
 
 -- scene : List Form -> Element
@@ -35,35 +41,6 @@ import Particle exposing (Particle)
 -- render d = div [ ] [ toHtml renderScene ]
 
 
-getCurrentPlayer : Model -> Int -> Player
-getCurrentPlayer game id =
-  let
-    player = List.filter (\p -> p.id == id) game.players |> List.head
-  in
-    case player of
-      Just p ->
-        p
-
-      Nothing ->
-        newPlayer game.uid
-
-
-type alias Map = List (List Int)
-
-
-type alias Model =
-  { width : Int
-  , height : Int
-  , map : Map
-  , projectiles : List Projectile
-  , blocks : List Block
-  , players : List Player
-  , particles : List Particle
-  , currentPlayerId : Int
-  , uid : Int
-  }
-
-
 type Msg
   = NothingHappened
   | Tick Time
@@ -73,7 +50,7 @@ type Msg
   | MouseMove Mouse.Position
 
 
-init : (Model, Cmd Msg)
+init : (Game, Cmd Msg)
 init =
   (
     { width = 500
@@ -89,48 +66,45 @@ init =
   , Cmd.none)
 
 
-view : Model -> Html b
-view model = text (toString model)
+view : Game -> Html b
+view game = text (toString game)
 
 
-update : Msg -> Model -> (Model, Cmd Msg)
-update msg model =
+update : Msg -> Game -> (Game, Cmd Msg)
+update msg game =
   case msg of
     Tick t ->
       let
         dt = t / 1000
-        projectiles = Projectile.updateProjectiles dt model.projectiles
-        players = Player.updatePlayers dt model.players
+        projectiles = Projectile.updateProjectiles dt game.projectiles
+        players = Player.updatePlayers dt game.players
       in
-        ({ model
+        ({ game
           | projectiles = projectiles
           , players = players
         }, Cmd.none)
 
     KeyDown keyCode ->
-        (keyDown keyCode model, Cmd.none)
+        (keyDown keyCode game, Cmd.none)
 
     KeyUp keyCode ->
-        (keyUp keyCode model, Cmd.none)
+        (keyUp keyCode game, Cmd.none)
 
     MouseMove position ->
-      (model, Cmd.none)
+      (game, Cmd.none)
 
     MouseClick position ->
-      let
-        projectile = Projectile.bulletProjectile
-      in
-        ({ model | projectiles = projectile :: model.projectiles }, Cmd.none)
+      (Game.fire game position Weapon.newGun, Cmd.none)
 
     _ ->
-      (model, Cmd.none)
+      (game, Cmd.none)
 
 
-keyUp : KeyCode -> Model -> Model
-keyUp keyCode model =
+keyUp : KeyCode -> Game -> Game
+keyUp keyCode game =
   let
     updatePlayer player =
-      if player.id == model.currentPlayerId then
+      if player.id == game.currentPlayerId then
         case Key.fromCode keyCode of
           Key.ArrowLeft ->
             { player | dx = 0 }
@@ -149,16 +123,16 @@ keyUp keyCode model =
       else
         player
 
-    players = List.map updatePlayer model.players
+    players = List.map updatePlayer game.players
   in
-    { model | players = players }
+    { game | players = players }
 
 
-keyDown : KeyCode -> Model -> Model
-keyDown keyCode model =
+keyDown : KeyCode -> Game -> Game
+keyDown keyCode game =
   let
     updatePlayer player =
-      if player.id == model.currentPlayerId then
+      if player.id == game.currentPlayerId then
         case Key.fromCode keyCode of
           Key.ArrowLeft ->
             { player | dx = -1 }
@@ -177,12 +151,12 @@ keyDown keyCode model =
       else
         player
 
-    players = List.map updatePlayer model.players
+    players = List.map updatePlayer game.players
   in
-    { model | players = players }
+    { game | players = players }
 
 
-subscriptions : Model -> Sub Msg
+subscriptions : Game -> Sub Msg
 subscriptions d =
   Sub.batch
     [ AnimationFrame.diffs Tick
