@@ -39,8 +39,8 @@ fire game direction weapon =
     dirX = toFloat direction.x
     dirY = toFloat direction.y
     angle = Utils.angleBetween (dirX, dirY) (player.x, player.y)
-    dx = cos(angle) * 6
-    dy = sin(angle) * 6
+    dx = cos(angle) * 120
+    dy = sin(angle) * 120
   in
     case weapon.weaponType of
       Dynamite ->
@@ -97,4 +97,3 @@ getCurrentPlayer game =
 
       Nothing ->
         newPlayer game.uid
-

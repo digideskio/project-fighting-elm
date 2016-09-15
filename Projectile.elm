@@ -6,7 +6,11 @@ module Projectile exposing
   , shotgunProjectile
   , smokeGrenadeProjectile
   , updateProjectiles
+  , draw
   )
+
+import Color
+import Collage exposing (Form, collage, rect, filled, move)
 
 
 type alias Projectile =
@@ -123,3 +127,8 @@ updateProjectile dt ({ x, y, dx, dy, lifetime } as projectile) =
       , y = y + dy * dt
       , lifetime = newLifetime
       }
+
+
+-- Afficher le joueur
+draw : Projectile -> List Form
+draw { x, y } = [ move (x, y) (filled (Color.rgb 200 19 67) (rect 2 10)) ]

@@ -2,6 +2,9 @@ module Player exposing (..)
 
 import Weapon exposing (Weapon, newGun)
 
+import Color
+import Collage exposing (Form, collage, rect, filled, move)
+
 
 type alias Player =
   { x : Float
@@ -37,3 +40,8 @@ updatePlayer dt ({ x, y, dx, dy } as player) =
     | x = x + dx * dt
     , y = y + dy * dt
     }
+
+
+-- Afficher le joueur
+draw : Player -> Form
+draw { x, y } = move (x, y) (filled (Color.rgb 30 19 67) (rect 50 50))

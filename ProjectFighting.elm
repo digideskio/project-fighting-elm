@@ -1,41 +1,41 @@
 module ProjectFighting exposing (..)
 
--- import Color
 import AnimationFrame
 import Keyboard
 import Mouse
+import List
 
 import Projectile
 import Key
 import Game
 import Weapon
+import Player
 
 import Html.App
 
 import Html exposing (Html, div, text)
--- import Element exposing (Element, toHtml)
--- import Collage exposing (Form, collage, rect, filled)
+import Element exposing (Element, toHtml)
+import Collage exposing (Form, collage, rect, filled)
 import Time exposing (Time)
 import Keyboard exposing (KeyCode)
 
 import Projectile exposing (Projectile)
-import Block exposing (Block)
 import Player exposing (Player, newPlayer)
-import Particle exposing (Particle)
+import Html exposing (div)
 
 import Game exposing (Game)
 
 
--- scene : List Form -> Element
--- scene elements = collage 500 500 elements
+scene : List Form -> Element
+scene elements = collage 500 500 elements
 
 
--- player : Form
--- player = filled (Color.rgb 30 19 67) (rect 14 15)
+renderScene : Game -> Element
+renderScene game = scene
+  ([ Player.draw (Game.getCurrentPlayer game) ] ++
+    List.concatMap Projectile.draw game.projectiles
+    )
 
-
--- renderScene : Element
--- renderScene = scene [ player ]
 
 -- render : GameData -> Html GameMsg
 -- render d = div [ ] [ toHtml renderScene ]
@@ -66,8 +66,9 @@ init =
   , Cmd.none)
 
 
-view : Game -> Html b
-view game = text (toString game)
+view : Game -> Html a
+-- view game = text <| toString game
+view game = div [] [ toHtml (renderScene game) ]
 
 
 update : Msg -> Game -> (Game, Cmd Msg)
@@ -131,20 +132,22 @@ keyUp keyCode game =
 keyDown : KeyCode -> Game -> Game
 keyDown keyCode game =
   let
+    speed = 60
+
     updatePlayer player =
       if player.id == game.currentPlayerId then
         case Key.fromCode keyCode of
           Key.ArrowLeft ->
-            { player | dx = -1 }
+            { player | dx = -speed }
 
           Key.ArrowUp ->
-            { player | dy = -1 }
+            { player | dy = speed }
 
           Key.ArrowRight ->
-            { player | dx = 1 }
+            { player | dx = speed }
 
           Key.ArrowDown ->
-            { player | dy = 1 }
+            { player | dy = -speed }
 
           _ ->
             player
