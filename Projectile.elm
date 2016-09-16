@@ -10,7 +10,7 @@ module Projectile exposing
   )
 
 import Color
-import Collage exposing (Form, collage, rect, filled, move)
+import Collage exposing (Form, collage, rect, filled, move, rotate, groupTransform)
 
 
 type alias Projectile =
@@ -41,12 +41,13 @@ newProjectile dx dy angle =
 bulletProjectile : Float -> Float -> Float -> Projectile
 bulletProjectile dx dy angle =
   let
-    projectile = newProjectile dx dy angle
+    projectile =
+      newProjectile dx dy angle
   in
-  { projectile
-    | damages = 6
-    , lifetime = 3
-    }
+    { projectile
+      | damages = 6
+      , lifetime = 3
+      }
 
 
 -- Grenade
@@ -54,11 +55,12 @@ bulletProjectile dx dy angle =
 grenadeProjectile : Float -> Float -> Float -> Projectile
 grenadeProjectile dx dy angle =
   let
-    projectile = newProjectile dx dy angle
+    projectile =
+      newProjectile dx dy angle
   in
-  { projectile
-    | lifetime = 4
-    }
+    { projectile
+      | lifetime = 4
+      }
 
 
 -- Roquette
@@ -66,12 +68,13 @@ grenadeProjectile dx dy angle =
 rocketProjectile : Float -> Float -> Float -> Projectile
 rocketProjectile dx dy angle =
   let
-    projectile = newProjectile dx dy angle
+    projectile =
+      newProjectile dx dy angle
   in
-  { projectile
-    | damages = 20
-    , lifetime = 3
-    }
+    { projectile
+      | damages = 20
+      , lifetime = 3
+      }
 
 
 -- Balle de fusil à pompe
@@ -79,12 +82,13 @@ rocketProjectile dx dy angle =
 shotgunProjectile : Float -> Float -> Float -> Projectile
 shotgunProjectile dx dy angle =
   let
-    projectile = newProjectile dx dy angle
+    projectile =
+      newProjectile dx dy angle
   in
-  { projectile
-    | damages = 8
-    , lifetime = 3
-    }
+    { projectile
+      | damages = 8
+      , lifetime = 3
+      }
 
 
 -- Fumigène
@@ -92,11 +96,12 @@ shotgunProjectile dx dy angle =
 smokeGrenadeProjectile : Float -> Float -> Float -> Projectile
 smokeGrenadeProjectile dx dy angle =
   let
-    projectile = newProjectile dx dy angle
+    projectile =
+      newProjectile dx dy angle
   in
-  { projectile
-    | lifetime = 4
-    }
+    { projectile
+      | lifetime = 4
+      }
 
 
 -- Mettre à jour les projecties
@@ -115,12 +120,14 @@ removeDeadProjectiles projectiles =
 updateProjectile : Float -> Projectile -> Projectile
 updateProjectile dt ({ x, y, dx, dy, lifetime } as projectile) =
   let
-    lifetimeMinusDt = lifetime - dt
+    lifetimeMinusDt =
+      lifetime - dt
 
-    newLifetime = if lifetimeMinusDt <= 0 then
-      0
-    else
-      lifetimeMinusDt
+    newLifetime =
+      if lifetimeMinusDt <= 0 then
+        0
+      else
+        lifetimeMinusDt
   in
     { projectile
       | x = x + dx * dt
@@ -130,5 +137,9 @@ updateProjectile dt ({ x, y, dx, dy, lifetime } as projectile) =
 
 
 -- Afficher le joueur
-draw : Projectile -> List Form
-draw { x, y } = [ move (x, y) (filled (Color.rgb 200 19 67) (rect 2 10)) ]
+draw : Projectile -> Form
+draw { x, y, angle } =
+  rect 10 2
+    |> filled (Color.rgb 200 19 67)
+    |> rotate (radians angle)
+    |> move (x, y)

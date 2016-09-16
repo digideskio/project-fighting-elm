@@ -44,4 +44,7 @@ updatePlayer dt ({ x, y, dx, dy } as player) =
 
 -- Afficher le joueur
 draw : Player -> Form
-draw { x, y } = move (x, y) (filled (Color.rgb 30 19 67) (rect 50 50))
+draw { x, y } =
+  rect 50 50
+    |> filled (Color.rgb 30 19 67)
+    |> move (x, y)

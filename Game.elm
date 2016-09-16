@@ -3,7 +3,7 @@ module Game exposing (..)
 import Mouse
 import Utils
 import Projectile exposing (Projectile)
-import Block exposing (Block)
+import Block exposing (Block, dynamiteBlock, mineBlock)
 import Player exposing (Player, newPlayer)
 import Particle exposing (Particle)
 import Weapon exposing (Weapon, WeaponType(..))
@@ -35,17 +35,27 @@ type alias Game =
 fire : Game -> Mouse.Position -> Weapon -> Game
 fire game direction weapon =
   let
-    player = getCurrentPlayer game
-    dirX = toFloat direction.x
-    dirY = toFloat direction.y
-    angle = Utils.angleBetween (dirX, dirY) (player.x, player.y)
-    dx = cos(angle) * 120
-    dy = sin(angle) * 120
+    player =
+      getCurrentPlayer game
+
+    dirX =
+      toFloat direction.x
+
+    dirY =
+      toFloat direction.y
+
+    angle =
+      Utils.angleBetween (dirX - (toFloat game.width / 2), dirY - (toFloat game.height / 2)) (player.x, player.y)
+
+    dx =
+      cos(angle) * 120
+
+    dy =
+      -(sin(angle) * 120)
   in
     case weapon.weaponType of
       Dynamite ->
-        game
-        -- { game | blocks = dynamiteBlock :: game.blocks }
+        { game | blocks = dynamiteBlock :: game.blocks }
 
       FlameThrower ->
         game
@@ -57,8 +67,7 @@ fire game direction weapon =
         { game | projectiles = bulletProjectile dx dy angle :: game.projectiles }
 
       Mine ->
-        game
-        -- { game | blocks = mineBlock :: game.blocks }
+        { game | blocks = mineBlock :: game.blocks }
 
       RocketLauncher ->
         { game | projectiles = rocketProjectile dx dy angle :: game.projectiles }
@@ -76,7 +85,8 @@ fire game direction weapon =
 getPlayer : Game -> Int -> Player
 getPlayer game id =
   let
-    player = List.filter (\p -> p.id == id) game.players |> List.head
+    player =
+      List.filter (\p -> p.id == id) game.players |> List.head
   in
     case player of
       Just p ->
@@ -89,7 +99,8 @@ getPlayer game id =
 getCurrentPlayer : Game -> Player
 getCurrentPlayer game =
   let
-    player = List.filter (\p -> p.id == game.currentPlayerId) game.players |> List.head
+    player =
+      List.filter (\p -> p.id == game.currentPlayerId) game.players |> List.head
   in
     case player of
       Just p ->

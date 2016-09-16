@@ -33,7 +33,7 @@ scene elements = collage 500 500 elements
 renderScene : Game -> Element
 renderScene game = scene
   ([ Player.draw (Game.getCurrentPlayer game) ] ++
-    List.concatMap Projectile.draw game.projectiles
+    List.concatMap (\p -> [ Projectile.draw p ]) game.projectiles
     )
 
 
@@ -76,9 +76,14 @@ update msg game =
   case msg of
     Tick t ->
       let
-        dt = t / 1000
-        projectiles = Projectile.updateProjectiles dt game.projectiles
-        players = Player.updatePlayers dt game.players
+        dt =
+          t / 1000
+
+        projectiles =
+          Projectile.updateProjectiles dt game.projectiles
+
+        players =
+          Player.updatePlayers dt game.players
       in
         ({ game
           | projectiles = projectiles
@@ -132,7 +137,8 @@ keyUp keyCode game =
 keyDown : KeyCode -> Game -> Game
 keyDown keyCode game =
   let
-    speed = 60
+    speed =
+      60
 
     updatePlayer player =
       if player.id == game.currentPlayerId then
@@ -154,7 +160,8 @@ keyDown keyCode game =
       else
         player
 
-    players = List.map updatePlayer game.players
+    players =
+      List.map updatePlayer game.players
   in
     { game | players = players }
 
