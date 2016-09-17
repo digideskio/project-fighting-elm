@@ -46,7 +46,8 @@ type Msg
   | Tick Time
   | KeyDown KeyCode
   | KeyUp KeyCode
-  | MouseClick Mouse.Position
+  | MouseDown Mouse.Position
+  | MouseUp Mouse.Position
   | MouseMove Mouse.Position
 
 
@@ -60,6 +61,8 @@ init =
     , blocks = [ ]
     , players = [ newPlayer 0 ]
     , particles = [ ]
+    , firing = False
+    , mousePos = { x = 0, y = 0 }
     , currentPlayerId = 0
     , uid = 0
     }
@@ -79,13 +82,19 @@ update msg game =
         dt =
           t / 1000
 
-        projectiles =
-          Projectile.updateProjectiles dt game.projectiles
-
         players =
           Player.updatePlayers dt game.players
+
+        newGame =
+          if game.firing then
+            Game.fire game game.mousePos Weapon.newGun
+          else
+            game
+
+        projectiles =
+          Projectile.updateProjectiles dt newGame.projectiles
       in
-        ({ game
+        ({ newGame
           | projectiles = projectiles
           , players = players
         }, Cmd.none)
@@ -97,10 +106,13 @@ update msg game =
         (keyUp keyCode game, Cmd.none)
 
     MouseMove position ->
-      (game, Cmd.none)
+      ({ game | mousePos = position }, Cmd.none)
 
-    MouseClick position ->
-      (Game.fire game position Weapon.newGun, Cmd.none)
+    MouseDown position ->
+      ({ game | firing = True }, Cmd.none)
+
+    MouseUp position ->
+      ({ game | firing = False }, Cmd.none)
 
     _ ->
       (game, Cmd.none)
@@ -172,7 +184,8 @@ subscriptions d =
     [ AnimationFrame.diffs Tick
     , Keyboard.downs KeyDown
     , Keyboard.ups KeyUp
-    , Mouse.clicks MouseClick
+    , Mouse.downs MouseDown
+    , Mouse.ups MouseUp
     , Mouse.moves MouseMove
     ]
 

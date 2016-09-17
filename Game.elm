@@ -27,6 +27,8 @@ type alias Game =
   , blocks : List Block
   , players : List Player
   , particles : List Particle
+  , firing : Bool
+  , mousePos : { x : Int, y : Int }
   , currentPlayerId : Int
   , uid : Int
   }
