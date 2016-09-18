@@ -1,5 +1,6 @@
 module Player exposing (..)
 
+import Weapon
 import Weapon exposing (Weapon, newGun)
 
 import Color
@@ -35,10 +36,18 @@ updatePlayers dt projectiles =
 
 -- Mettre à jour un joueur
 updatePlayer : Float -> Player -> Player
-updatePlayer dt ({ x, y, dx, dy } as player) =
+updatePlayer dt ({ x, y, dx, dy, weapon } as player) =
   { player
     | x = x + dx * dt
     , y = y + dy * dt
+    , weapon = Weapon.updateWeapon dt weapon
+    }
+
+
+resetPlayerWeapon : Player -> Player
+resetPlayerWeapon ({ weapon } as player) =
+  { player
+    | weapon = Weapon.resetWeaponLatency weapon
     }
 
 

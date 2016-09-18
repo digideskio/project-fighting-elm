@@ -135,3 +135,26 @@ newSubmachineGun =
     , miniatureIndex = 0
     , weaponType = SubmachineGun
     }
+
+
+updateWeapon : Float -> Weapon -> Weapon
+updateWeapon dt ({ latency } as weapon) =
+  let
+    latencyMinusDt = latency - dt
+
+    newLatency =
+      if latencyMinusDt < 0 then
+        latencyMinusDt
+      else
+        0
+  in
+    { weapon
+      | latency = newLatency
+      }
+
+
+resetWeaponLatency : Weapon -> Weapon
+resetWeaponLatency ({ latency, baseLatency } as weapon) =
+  { weapon
+    | latency = baseLatency
+    }

@@ -4,7 +4,7 @@ import Mouse
 import Utils
 import Projectile exposing (Projectile)
 import Block exposing (Block, dynamiteBlock, mineBlock)
-import Player exposing (Player, newPlayer)
+import Player exposing (Player, newPlayer, resetPlayerWeapon)
 import Particle exposing (Particle)
 import Weapon exposing (Weapon, WeaponType(..))
 import Projectile exposing
@@ -37,6 +37,12 @@ type alias Game =
 fire : Game -> Mouse.Position -> Weapon -> Game
 fire game direction weapon =
   let
+    canFire =
+      if weapon.latency <= 0 then
+        True
+      else
+        False
+
     player =
       getCurrentPlayer game
 
@@ -54,34 +60,43 @@ fire game direction weapon =
 
     dy =
       sin(angle) * 120
+
+    newGame =
+      if canFire then
+        { game | players = [ resetPlayerWeapon player ] }
+      else
+        game
   in
-    case weapon.weaponType of
-      Dynamite ->
-        { game | blocks = dynamiteBlock :: game.blocks }
+    if canFire then
+      case weapon.weaponType of
+        Dynamite ->
+          { game | blocks = dynamiteBlock :: game.blocks }
 
-      FlameThrower ->
-        game
+        FlameThrower ->
+          game
 
-      Grenade ->
-        { game | projectiles = grenadeProjectile dx dy angle :: game.projectiles }
+        Grenade ->
+          { game | projectiles = grenadeProjectile dx dy angle :: game.projectiles }
 
-      Gun ->
-        { game | projectiles = bulletProjectile dx dy angle :: game.projectiles }
+        Gun ->
+          { game | projectiles = bulletProjectile dx dy angle :: game.projectiles }
 
-      Mine ->
-        { game | blocks = mineBlock :: game.blocks }
+        Mine ->
+          { game | blocks = mineBlock :: game.blocks }
 
-      RocketLauncher ->
-        { game | projectiles = rocketProjectile dx dy angle :: game.projectiles }
+        RocketLauncher ->
+          { game | projectiles = rocketProjectile dx dy angle :: game.projectiles }
 
-      Shotgun ->
-        { game | projectiles = shotgunProjectile dx dy angle :: game.projectiles }
+        Shotgun ->
+          { game | projectiles = shotgunProjectile dx dy angle :: game.projectiles }
 
-      SmokeGrenade ->
-        { game | projectiles = smokeGrenadeProjectile dx dy angle :: game.projectiles }
+        SmokeGrenade ->
+          { game | projectiles = smokeGrenadeProjectile dx dy angle :: game.projectiles }
 
-      SubmachineGun ->
-        game
+        SubmachineGun ->
+          game
+    else
+      game
 
 
 getPlayer : Game -> Int -> Player
