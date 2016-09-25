@@ -55,6 +55,12 @@ fire game direction weapon =
     angle =
       Utils.angleBetween (dirX - (toFloat game.width / 2), -(dirY - (toFloat game.height / 2))) (player.x, player.y)
 
+    x =
+      player.x
+
+    y =
+      player.y
+
     dx =
       cos(angle) * 120
 
@@ -76,22 +82,22 @@ fire game direction weapon =
           game
 
         Grenade ->
-          { game | projectiles = grenadeProjectile dx dy angle :: game.projectiles }
+          { game | projectiles = grenadeProjectile (x, y) (dx, dy) angle :: game.projectiles }
 
         Gun ->
-          { game | projectiles = bulletProjectile dx dy angle :: game.projectiles }
+          { game | projectiles = bulletProjectile (x, y) (dx, dy) angle :: game.projectiles }
 
         Mine ->
           { game | blocks = mineBlock :: game.blocks }
 
         RocketLauncher ->
-          { game | projectiles = rocketProjectile dx dy angle :: game.projectiles }
+          { game | projectiles = rocketProjectile (x, y) (dx, dy) angle :: game.projectiles }
 
         Shotgun ->
-          { game | projectiles = shotgunProjectile dx dy angle :: game.projectiles }
+          { game | projectiles = shotgunProjectile (x, y) (dx, dy) angle :: game.projectiles }
 
         SmokeGrenade ->
-          { game | projectiles = smokeGrenadeProjectile dx dy angle :: game.projectiles }
+          { game | projectiles = smokeGrenadeProjectile (x, y) (dx, dy) angle :: game.projectiles }
 
         SubmachineGun ->
           game

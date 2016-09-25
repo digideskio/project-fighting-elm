@@ -57,3 +57,4 @@ draw { x, y } =
   rect 50 50
     |> filled (Color.rgb 30 19 67)
     |> move (x, y)
+

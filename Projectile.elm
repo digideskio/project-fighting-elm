@@ -24,10 +24,10 @@ type alias Projectile =
   }
 
 
-newProjectile : Float -> Float -> Float -> Projectile
-newProjectile dx dy angle =
-  { x = 0
-  , y = 0
+newProjectile : (Float, Float) -> (Float, Float) -> Float -> Projectile
+newProjectile (x, y) (dx, dy) angle =
+  { x = x
+  , y = y
   , dx = dx
   , dy = dy
   , damages = 0
@@ -38,11 +38,11 @@ newProjectile dx dy angle =
 
 -- Balle de pistolet
 -- @todo
-bulletProjectile : Float -> Float -> Float -> Projectile
-bulletProjectile dx dy angle =
+bulletProjectile : (Float, Float) -> (Float, Float) -> Float -> Projectile
+bulletProjectile (x, y) (dx, dy) angle =
   let
     projectile =
-      newProjectile dx dy angle
+      newProjectile (x, y) (dx, dy) angle
   in
     { projectile
       | damages = 6
@@ -52,11 +52,11 @@ bulletProjectile dx dy angle =
 
 -- Grenade
 -- @todo
-grenadeProjectile : Float -> Float -> Float -> Projectile
-grenadeProjectile dx dy angle =
+grenadeProjectile : (Float, Float) -> (Float, Float) -> Float -> Projectile
+grenadeProjectile (x, y) (dx, dy) angle =
   let
     projectile =
-      newProjectile dx dy angle
+      newProjectile (x, y) (dx, dy) angle
   in
     { projectile
       | lifetime = 4
@@ -65,11 +65,11 @@ grenadeProjectile dx dy angle =
 
 -- Roquette
 -- @todo
-rocketProjectile : Float -> Float -> Float -> Projectile
-rocketProjectile dx dy angle =
+rocketProjectile : (Float, Float) -> (Float, Float) -> Float -> Projectile
+rocketProjectile (x, y) (dx, dy) angle =
   let
     projectile =
-      newProjectile dx dy angle
+      newProjectile (x, y) (dx, dy) angle
   in
     { projectile
       | damages = 20
@@ -79,11 +79,11 @@ rocketProjectile dx dy angle =
 
 -- Balle de fusil à pompe
 -- @todo
-shotgunProjectile : Float -> Float -> Float -> Projectile
-shotgunProjectile dx dy angle =
+shotgunProjectile : (Float, Float) -> (Float, Float) -> Float -> Projectile
+shotgunProjectile (x, y) (dx, dy) angle =
   let
     projectile =
-      newProjectile dx dy angle
+      newProjectile (x, y) (dx, dy) angle
   in
     { projectile
       | damages = 8
@@ -93,11 +93,11 @@ shotgunProjectile dx dy angle =
 
 -- Fumigène
 -- @todo
-smokeGrenadeProjectile : Float -> Float -> Float -> Projectile
-smokeGrenadeProjectile dx dy angle =
+smokeGrenadeProjectile : (Float, Float) -> (Float, Float) -> Float -> Projectile
+smokeGrenadeProjectile (x, y) (dx, dy) angle =
   let
     projectile =
-      newProjectile dx dy angle
+      newProjectile (x, y) (dx, dy) angle
   in
     { projectile
       | lifetime = 4
